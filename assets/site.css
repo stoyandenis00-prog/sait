@@ -96,7 +96,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 700; }
 .btn--outline:hover { background: var(--accent-soft); }
 .btn--light { background: #fff; color: var(--text); }
 .btn--light:hover { background: #eceef2; }
-.btn--text { padding: 0; color: var(--accent); }
+.btn--text { padding: 6px 0; color: var(--accent); } /* поне 24 px за пръст (WCAG 2.5.8) */
 .btn--text:hover { color: var(--accent-hover); }
 .btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
 @media (max-width: 639px) { .btn-row--stack { flex-direction: column; } .btn-row--stack .btn { width: 100%; } }
@@ -291,7 +291,8 @@ a.card:hover, .card--hover:hover { transform: translateY(-2px); box-shadow: var(
 }
 
 /* ---------- калкулатор ---------- */
-.roi { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.roi { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+.roi > * { min-width: 0; }
 .roi__inputs { display: flex; flex-direction: column; gap: 20px; padding: 28px; border: 1px solid var(--border); border-radius: var(--r-card); background: #fff; }
 .roi__f { display: flex; flex-direction: column; gap: 8px; font-size: 15px; font-weight: 500; }
 .roi__f b { color: var(--accent); }
@@ -308,7 +309,7 @@ a.card:hover, .card--hover:hover { transform: translateY(-2px); box-shadow: var(
 .roi__formula { font-size: 13px; color: var(--dark-text); }
 .roi__out .note { color: #6b7280; margin: 0; }
 .roi__out .btn { align-self: flex-start; margin-top: auto; }
-@media (max-width: 767px) { .roi { grid-template-columns: 1fr; } .roi__inputs, .roi__out { padding: 22px; } .roi__big span { font-size: 44px; } .roi__out .btn { align-self: stretch; } }
+@media (max-width: 767px) { .roi { grid-template-columns: minmax(0, 1fr); } .roi__in input { width: 100%; max-width: 160px; } .roi__inputs, .roi__out { padding: 22px; } .roi__big span { font-size: 44px; } .roi__out .btn { align-self: stretch; } }
 
 /* ---------- защо с нас ---------- */
 .why { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
@@ -360,7 +361,8 @@ a.card:hover, .card--hover:hover { transform: translateY(-2px); box-shadow: var(
 .footer__grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 48px; padding: 64px 0 48px; }
 .footer .logo { color: #fff; margin-bottom: 16px; }
 .footer__title { color: #fff; font-weight: 600; margin-bottom: 14px; }
-.footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.footer ul a, .footer__contact a, .footer__bottom a { display: inline-block; padding: 4px 0; }
 .footer a:hover { color: #fff; }
 .footer__contact { margin-top: 16px; display: flex; flex-direction: column; gap: 6px; }
 .footer__bottom { display: flex; justify-content: space-between; gap: 16px; padding: 24px 0; border-top: 1px solid var(--dark-2); font-size: 13px; }
@@ -407,6 +409,7 @@ a.card:hover, .card--hover:hover { transform: translateY(-2px); box-shadow: var(
 /* ---------- страница на проект ---------- */
 .project-top { padding-top: 40px; }
 .crumbs { display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; color: var(--muted); margin-bottom: 32px; }
+.crumbs a { display: inline-block; padding: 4px 0; }
 .crumbs a:hover { color: var(--accent); }
 .project-top__grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: center; }
 .project-top__text { display: flex; flex-direction: column; gap: 20px; }
