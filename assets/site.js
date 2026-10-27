@@ -143,6 +143,30 @@
     if (items.length < 2) lb.querySelectorAll("[data-prev],[data-next]").forEach((b) => (b.hidden = true));
   }
 
+  // „Запази разговор“ към Cal.com → прозорец върху сайта в цвета на сайта (--accent; цветът в самия Cal.com е платен).
+  // Ако прозорецът не се появи до 3 сек (блокиран скрипт, без мрежа) → обикновеният линк.
+  const calLinks = [...document.querySelectorAll('a[href^="https://cal.com/"]')];
+  if (calLinks.length) {
+    const ns = "razgovor";
+    // Cal.com се зарежда едва при първото натискане (така пише и в „Поверителност“).
+    const initCal = () => {
+      if (window.Cal?.ns?.[ns]) return;
+      const brand = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#7c5cf6";
+      // Официалният код за вграждане на Cal.com (зарежда app.cal.com/embed/embed.js).
+      (function (C, A, L) { const p = (a, ar) => a.q.push(ar); const d = C.document; C.Cal = C.Cal || function () { const cal = C.Cal; const ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+      Cal("init", ns, { origin: "https://app.cal.com" });
+      Cal.ns[ns]("ui", { theme: "light", layout: "month_view", hideEventTypeDetails: false, cssVarsPerTheme: { light: { "cal-brand": brand } } });
+    };
+    calLinks.forEach((a) => a.addEventListener("click", (e) => {
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.button) return; // нов раздел → нормално
+      e.preventDefault();
+      initCal();
+      const u = new URL(a.href);
+      Cal.ns[ns]("modal", { calLink: u.pathname.slice(1), config: { layout: "month_view", theme: "light" } });
+      setTimeout(() => { if (!document.querySelector("cal-modal-box")) location.href = a.href; }, 3000);
+    }));
+  }
+
   // Чипове на тестовата страница: само визуално.
   document.querySelectorAll("[data-chips]").forEach((row) => row.addEventListener("click", (e) => {
     const b = e.target.closest("button.chip");
