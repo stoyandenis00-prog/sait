@@ -425,7 +425,19 @@ a.card:hover, .card--hover:hover { transform: translateY(-2px); box-shadow: var(
 .project-top__text { display: flex; flex-direction: column; gap: 20px; }
 .project-top__title { font-size: 40px; line-height: 1.12; letter-spacing: -1px; }
 .project-top__text .metrics { padding: 4px 0; }
+.project-top__head, .project-top__side { display: flex; flex-direction: column; gap: 20px; }
+.project-top__media { position: relative; }
 .project-top__media .browser { box-shadow: var(--shadow-hover); }
+/* с видео: текстът в две колони отгоре, видеото на цялата ширина отдолу */
+.project-top--video .project-top__grid { grid-template-columns: 1fr; gap: 40px; }
+.project-top--video .project-top__text { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 20px 64px; align-items: end; }
+.project-top--video .project-top__media .browser { border-radius: 16px; }
+.project-top--video .browser__bar { height: 40px; }
+.video-full { position: absolute; right: 16px; bottom: 16px; display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border: 0; border-radius: 999px; background: rgba(20, 22, 27, .72); color: #fff; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; opacity: .85; transition: opacity var(--t), background var(--t); }
+.video-full:hover, .video-full:focus-visible { opacity: 1; background: rgba(20, 22, 27, .9); }
+.video-full .icon { width: 18px; height: 18px; }
+.browser__view video { cursor: zoom-in; }
+.browser__view video:fullscreen { object-fit: contain; background: #fff; cursor: default; }
 .prs { border-bottom: 0; padding-bottom: 0; }
 .prs > div { font-size: 15px; }
 .prs__benefit { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 16px; }
@@ -460,12 +472,15 @@ a.card:hover, .card--hover:hover { transform: translateY(-2px); box-shadow: var(
 .lightbox__next { right: 16px; top: 50%; transform: translateY(-50%); }
 @media (max-width: 1023px) {
   .project-top__grid, .project-split { grid-template-columns: 1fr; gap: 32px; }
+  .project-top--video .project-top__text { grid-template-columns: 1fr; }
   .project-top__media { order: -1; }
 }
 @media (max-width: 767px) {
   .project-top { padding-top: 24px; }
   .crumbs { margin-bottom: 20px; }
   .project-top__title { font-size: 30px; letter-spacing: -.6px; }
+  .video-full { right: 8px; bottom: 8px; min-height: 36px; width: 36px; padding: 0; justify-content: center; }
+  .video-full span { display: none; }
   .prs { gap: 24px; }
   .checks, .project-meta__grid { grid-template-columns: 1fr; gap: 12px; }
   .project-meta__grid { gap: 32px; }

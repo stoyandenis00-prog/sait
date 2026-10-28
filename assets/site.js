@@ -114,7 +114,13 @@
       if (form.botcheck.checked) return; // бот
       btn.disabled = true;
       try {
-        const r = await fetch(form.action, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(Object.fromEntries(new FormData(form))) });
+        const d = Object.fromEntries(new FormData(form));
+        d["Страница"] = location.pathname;
+        // За HUB → Запитвания: полетата като един ред (base64url на JSON), точни каквото и да е оформлението на писмото.
+        const bytes = new TextEncoder().encode(JSON.stringify({ n: d.name, c: d.contact, m: d.message, d: d["Демо"] || "", p: location.pathname }));
+        let bin = ""; bytes.forEach((b) => (bin += String.fromCharCode(b)));
+        d.HUB = "HUB1:" + btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        const r = await fetch(form.action, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(d) });
         const j = await r.json().catch(() => ({}));
         if (!r.ok || j.success === false) throw new Error(j.message || "грешка");
         window.umami?.track("zapitvane-forma", { page: location.pathname });
@@ -125,6 +131,14 @@
       } finally { btn.disabled = false; }
     });
   });
+
+  // Видеото на демото на цял екран: бутонът или натискане върху самото видео. На iPhone — вграденият плейър.
+  const vid = document.querySelector(".project-top__media video");
+  const goFull = () => (vid.requestFullscreen ? vid.requestFullscreen().catch(() => {}) : vid.webkitEnterFullscreen?.());
+  if (vid) {
+    document.querySelector("[data-video-full]")?.addEventListener("click", goFull);
+    vid.addEventListener("click", () => { if (!document.fullscreenElement) goFull(); });
+  }
 
   // Галерия на проект: снимка на цял екран, стрелки и Esc.
   const lb = document.querySelector("[data-lightbox]");
