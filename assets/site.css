@@ -219,10 +219,11 @@ a.card:hover, .card--hover:hover { transform: translateY(-2px); box-shadow: var(
 
 /* ---------- решетки ---------- */
 .grid { display: grid; gap: 24px; }
+.grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .grid--3 { grid-template-columns: repeat(3, 1fr); }
 .grid--2 { grid-template-columns: repeat(2, 1fr); }
-@media (max-width: 1023px) { .grid--3 { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 639px) { .grid--3, .grid--2 { grid-template-columns: 1fr; } }
+@media (max-width: 1023px) { .grid--3, .grid--4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 639px) { .grid--4, .grid--3, .grid--2 { grid-template-columns: 1fr; } }
 
 /* ---------- демо карта (Начало) ---------- */
 .demo-card { display: flex; flex-direction: column; padding: 16px; }
@@ -473,7 +474,7 @@ a.card:hover, .card--hover:hover { transform: translateY(-2px); box-shadow: var(
 .project-meta__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
 .project-meta__logos { justify-content: flex-start; margin-left: -12px; }
 .project-meta__chips { flex-wrap: wrap; }
-.project-meta__chips .chip { font-size: 14px; padding: 6px 12px; }
+.project-meta__chips .chip { font-size: 14px; padding: 6px 12px; white-space: normal; max-width: 100%; } /* дълъг текст от админа се пренася, не разпъва колоната */
 .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .gallery__item { padding: 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: #fff; cursor: zoom-in; aspect-ratio: 16 / 10; }
 .gallery__item img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform var(--t); }
